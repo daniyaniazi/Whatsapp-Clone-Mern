@@ -19,7 +19,6 @@ exports.getUserListController = async function (sessionId) {
 
 exports.getUserInfoController = async function (sessionId) {
     const db = await M_CONNECT.db(process.env.MONGO_DB_NAME);
-
     let collection = await db.collection(process.env.MONGO_DB_USERS_COLLECTION)
     let res = await collection.findOne({ sessionId: sessionId })
     return res;
@@ -29,6 +28,15 @@ exports.getUserInfoController = async function (sessionId) {
 exports.getUserChatsController = async function (senderId, recieverId) {
     const db = await M_CONNECT.db(process.env.MONGO_DB_NAME);
     let collection = await db.collection(process.env.MONGO_DB_CHATS_COLLECTION)
+
     let res = await collection.find({ room: { $all: [senderId, recieverId] } }).toArray()
     return res;
+}
+
+exports.saveChats = async (payload) => {
+    const db = await M_CONNECT.db(process.env.MONGO_DB_NAME);
+    let collection = await db.collection(process.env.MONGO_DB_CHATS_COLLECTION)
+
+    let res = await collection.inserOne(payload)
+    return res.insertedId;
 }
