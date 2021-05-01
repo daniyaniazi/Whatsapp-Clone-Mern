@@ -1,0 +1,20 @@
+flushall
+
+keys *
+
+set name daniya
+
+ get name
+
+WC:user:OFF
+    123:"{"name":"daniya"}"
+WC:user:ON
+    123:"{"name":"usertest"}"
+
+
+
+HMSET WC:user:ON 123 '{"name":"daniya"}'
+
+HGET  WC:user:ON 123
+
+HDEL  WC:user:ON 123
