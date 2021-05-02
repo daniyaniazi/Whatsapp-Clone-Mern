@@ -5,7 +5,10 @@ const { getOfflineUserInfo } = require('./models/heartbeat.model')
 
 exports.userLogin = async (req, res) => {
     try {
-        const { name } = req.body
+        console.log('file', req.file)
+        console.log("IN LOGIN")
+        const { name } = JSON.parse(req.body.payload);
+        console.log(name)
         const cureentTime = getTime()
         let user = {
             name,
@@ -14,19 +17,23 @@ exports.userLogin = async (req, res) => {
             createdAt: cureentTime,
             updatedAt: cureentTime
         }
+        console.log(req.file, req.file.filename)
         if (req.file && req.file.filename) {
-            user['profileImg'] = `${process.env.BASE_PATH}:${process.env.PORT}/${process.env.PROFILE_IMAGE_PATH}/${req.file.filename}`
+            user['profileImg'] = `${process.env.BASE_PATH}:${process.env.PORT}/${process.env.PROFILE_IMAGE_PATH}/${req.file.filename}`;
+
+            console.log(user['profileImg'])
         }
-        let id = await this.userLoginController(user)
+        let id = await userLoginController(user)
         user["_id"] = id
         res.status(200).send(user)
     } catch (error) {
+        console.log("error", error)
         res.status(400).send(error.message)
     }
 }
 
 
-exports.getUserList = async (res, res) => {
+exports.getUserList = async (req, res) => {
     try {
         const userList = await getUserListController(req.params.id)
         let userListObj = {};
@@ -41,7 +48,7 @@ exports.getUserList = async (res, res) => {
     }
 }
 
-exports.getUserInfo = async (res, res) => {
+exports.getUserInfo = async (req, res) => {
     try {
         const userInfo = await getUserInfoController(req.params.id)
         res.status(200).send(userInfo)

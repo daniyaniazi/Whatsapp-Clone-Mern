@@ -12,17 +12,19 @@ exports.getTime = () => {
 }
 
 
-userProfileStorage = multer.diskStorage({
+const userProfileStorage = multer.diskStorage({
     destination: `uploads/${process.env.PROFILE_IMAGE_PATH}/`,
     filename: function (req, file, cb) {
-        cb(null, Date.now() + path.extname(file.originalname))
-    }
-})
+
+        console.log(file)
+        cb(null, Date.now() + path.extname(file.originalname));
+    },
+});
+
 exports.userProfileUpload = multer({
     storage: userProfileStorage,
-    limits: { fileSize: 1000000, }
-}).single("profileImg")
-
+    limits: { fileSize: 10000000 },
+}).single("profileImg");
 
 
 audioStorage = multer.diskStorage({

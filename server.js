@@ -10,7 +10,11 @@ const PORT = process.env.PORT
 const app = express()
 const server = http.createServer(app)
 
-
+app.use(express.json())
+app.use((req, res, next) => {
+    console.log(`SERVER REQ: ${req.url}, SERVER BODY:  ${req.body} files : ${(req.files)}`)
+    next()
+})
 app.use([cors(), express.static('uploads'), express.json(), express.urlencoded({ extended: false }), router])
 
 const io = (module.exports.io = require('socket.io')(server))

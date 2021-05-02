@@ -1,6 +1,6 @@
 import React from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown, faEllipsisV, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisV, } from "@fortawesome/free-solid-svg-icons";
 import './ChatHeader.scss'
 
 
