@@ -21,7 +21,7 @@ export const putRequest = async (url, payload = {}) => {
 
 
 export const getRequest = async (url) => {
-    const data = await axios.put(url).then(response => response.data)
+    const data = await axios.get(url).then(response => response.data)
         .catch(err => ({ error: err.response.data }))
 
     return data

@@ -1,28 +1,54 @@
 import React from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown, } from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown, faUser } from "@fortawesome/free-solid-svg-icons";
 import './ChatCardListing.scss';
+import { shortFormatTime } from "../../utils/helper";
 
+const ChatCardListing = ({ friendList }) => {
+    const recentMessage = (data) => {
+        let msg = ''
+        if (data.recentMsg && data.recentMsg.msg) {
+            if (data.recentMsg.msg.type = "message") {
+                msg = data.recentMsg.msg.value
+            }
+            else if (data.recentMsg.msg.type = "file") {
+                msg = "Media shared"
+            }
+            else if (data.recentMsg.msg.type = "typing") {
+                msg = <i style={{ color: "#a7a7a7" }}>typing</i>
+            }
+            else {
+                msg = "start a new chat"
+            }
+        } else {
+            msg = "start a new chat"
+        }
 
-const ChatCardListing = () => {
+        return msg
+
+    }
     return (
         <div className="chat-cards-listing">
-            <div className="card">
-                <div className="img-container">
-                    <img src="https://st3.depositphotos.com/15648834/17930/v/1600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg" alt="imge" />
-                </div>
-                <div className="card-detail">
-                    <h4 className="title">user1</h4>
-                    <p className="desc">hi how are you</p>
-                </div>
+            {Object.keys(friendList).map(key => {
+                return (
+                    <div key={key} className="card">
+                        <div className="img-container">
+                            {friendList[key].profileImg ? (<img src={friendList[key].profileImg} alt="imge" />) : (<FontAwesomeIcon className='icon-block' icon={faUser} />)}
 
-                <div className="time">
-                    10:20 Pm
-                </div>
-                <div className="action-btn">
-                    <FontAwesomeIcon icon={faChevronDown} />
-                </div>
-            </div>
+                        </div>
+                        <div className="card-detail">
+                            <h4 className="title">{friendList[key].name}</h4>
+                            <p className="desc">{recentMessage(friendList[key])}</p>
+                        </div>
+
+                        <div className="time">
+                            {friendList[key].recentMessage && shortFormatTime(friendList[key].recentMessage.time)}
+                        </div>
+                        <div className="action-btn">
+                            <FontAwesomeIcon icon={faChevronDown} />
+                        </div>
+                    </div>)
+            })}
         </div>
     )
 }

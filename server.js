@@ -17,7 +17,11 @@ app.use((req, res, next) => {
 })
 app.use([cors(), express.static('uploads'), express.json(), express.urlencoded({ extended: false }), router])
 
-const io = (module.exports.io = require('socket.io')(server))
+const io = (module.exports.io = require('socket.io')(server, {
+    cors: {
+        origin: '*',
+    }
+}))
 const socketMangaer = require('./app/socketManager/socketManager')
 
 io.on("connection", socketMangaer)

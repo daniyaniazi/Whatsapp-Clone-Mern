@@ -3,14 +3,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import './Login.scss';
 
-const Login = ({ handleLogin }) => {
+const Login = ({ handleLogin, error }) => {
 
-    const [user, setuser] = useState({ name: "", profileImg: {} });
+    const [user, setuser] = useState({ name: "", profileImg: null });
 
     const handleSubmit = (e) => {
         console.log("before handleSubmit", user)
         e.preventDefault()
-        handleLogin(user)
+        handleLogin(user, error)
     }
     const onFileChange = (e) => {
         setuser({ ...user, profileImg: e.target.files[0] })

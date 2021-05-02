@@ -35,6 +35,7 @@ exports.userLogin = async (req, res) => {
 
 exports.getUserList = async (req, res) => {
     try {
+
         const userList = await getUserListController(req.params.id)
         let userListObj = {};
         if (userList.length) {

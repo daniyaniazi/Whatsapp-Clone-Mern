@@ -5,10 +5,7 @@ const { saveChats } = require('../models/common.model')
 
 module.exports = (socket) => {
     try {
-
-
-        console.log("connecteds")
-
+        console.log("Socket connected")
         //JOIN CHAT
         socket.on("join-user", (data, callback) => {
             const { _id, name, profileImg, sessionId, createdAt, updatedAt } = data
@@ -20,12 +17,12 @@ module.exports = (socket) => {
             removeUsersFromRedisList("WC:user:OFF", sessionId)
             //add in online list
             addUsertoListRedis("WC:user:ON", sessionId, { time: getTime() }, (e, r) => {
-                if (e) return callback(e)
-                console.log("New User Joined", r)
-                socket.sessionId = sessionId
-                socket.join(sessionId)
-                socket.broadcast.emit("new-online-user", newUser)
-                callback();
+                if (e) return callback(e);
+                console.log("new user joined", r);
+                socket.sessionId = sessionId;
+                socket.join(sessionId);
+                socket.broadcast.emit("new-online-user", newUser);
+                callback(`${newUser.name} has joined`);
             })
         })
 
