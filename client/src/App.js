@@ -36,16 +36,21 @@ function App() {
       return false
     }
     console.log(response)
+    setCookies("user", response)
     setUser(response)
   }
 
+  const handleLogout = () => {
+    removeCookies("user");
+    setUser(null)
+  }
   return (
     <Fragment>
       {!(user && user.sessionId) ?
         <Login handleLogin={handleLogin} /> :
         <div className="App">
           <div className="user-left-side">
-            <ProfileSection />
+            <ProfileSection handleLogout={handleLogout} />
             <SearchBar />
             <ChatCardListing />
           </div>

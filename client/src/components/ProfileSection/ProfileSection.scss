@@ -22,4 +22,10 @@
             height: 100%;
         }
     }
+    .btn {
+        &:hover {
+            color: #9d9d9d;
+            cursor: pointer;
+        }
+    }
 }
