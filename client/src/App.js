@@ -12,6 +12,8 @@ import { BASE_URL, LOGIN } from "./utils/apiEndpoints";
 import { Cookies, useCookies } from "react-cookie";
 
 
+import AuthContext from "../src/context/AuthContext";
+
 
 function App() {
   const [Cookies, setCookies, removeCookies] = useCookies(["whatsappclone"])
@@ -48,16 +50,18 @@ function App() {
     <Fragment>
       {!(user && user.sessionId) ?
         <Login handleLogin={handleLogin} /> :
-        <div className="App">
-          <div className="user-left-side">
-            <ProfileSection handleLogout={handleLogout} />
-            <SearchBar />
-            <ChatCardListing />
+        (<AuthContext.Provider value={user}>
+          <div className="App">
+            <div className="user-left-side">
+              <ProfileSection handleLogout={handleLogout} />
+              <SearchBar />
+              <ChatCardListing />
+            </div>
+            <div className="chat-right-side">
+              <ChatSection />
+            </div>
           </div>
-          <div className="chat-right-side">
-            <ChatSection />
-          </div>
-        </div>
+        </AuthContext.Provider>)
       }
     </Fragment>
   );
