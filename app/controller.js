@@ -5,10 +5,9 @@ const { getOfflineUserInfo } = require('./models/heartbeat.model')
 
 exports.userLogin = async (req, res) => {
     try {
-        console.log('file', req.file)
-        console.log("IN LOGIN")
+
         const { name } = JSON.parse(req.body.payload);
-        console.log(name)
+
         const cureentTime = getTime()
         let user = {
             name,
@@ -17,17 +16,17 @@ exports.userLogin = async (req, res) => {
             createdAt: cureentTime,
             updatedAt: cureentTime
         }
-        console.log(req.file, req.file.filename)
+
         if (req.file && req.file.filename) {
             user['profileImg'] = `${process.env.BASE_PATH}:${process.env.PORT}/${process.env.PROFILE_IMAGE_PATH}/${req.file.filename}`;
 
-            console.log(user['profileImg'])
+
         }
         let id = await userLoginController(user)
         user["_id"] = id
         res.status(200).send(user)
     } catch (error) {
-        console.log("error", error)
+
         res.status(400).send(error.message)
     }
 }
@@ -62,7 +61,8 @@ exports.getUserInfo = async (req, res) => {
 exports.getUserChats = async (req, res) => {
     try {
         const { senderId, recieverId } = req.body
-        let chats = await this.getUserChatsController(senderId, recieverId)
+        let chats = await getUserChatsController(senderId, recieverId)
+
         res.status(200).send(chats)
     } catch (error) {
         res.status(400).send(error.message)
@@ -86,6 +86,7 @@ exports.uploadVoice = async (req, res) => {
 
 exports.uploadImageFile = async (req, res) => {
     try {
+
         let filePath = '';
         if (req.file && req.file.filename) {
             filePath = `${process.env.BASE_PATH}:${process.env.PORT}/${process.env.IMAGE_MESSAGE_PATH}/${req.file.filename}`
@@ -99,10 +100,10 @@ exports.uploadImageFile = async (req, res) => {
 
 exports.CheckIfUserOffline = async (req, res) => {
     try {
-        getOfflineUserInfo("WC:user:OFF", req.params.id, (e, res) => {
+        getOfflineUserInfo("WC:user:OFF", req.params.id, (e, r) => {
             if (e) throw new Error
-
-            res.status(200).send(r ? r : flase)
+            // console.log(r)
+            res.status(200).send(r ? r : false)
         })
     }
 

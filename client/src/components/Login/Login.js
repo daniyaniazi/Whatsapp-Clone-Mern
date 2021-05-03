@@ -8,7 +8,7 @@ const Login = ({ handleLogin, error }) => {
     const [user, setuser] = useState({ name: "", profileImg: null });
 
     const handleSubmit = (e) => {
-        console.log("before handleSubmit", user)
+
         e.preventDefault()
         handleLogin(user, error)
     }

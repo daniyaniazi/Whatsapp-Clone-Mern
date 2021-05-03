@@ -8,7 +8,8 @@ exports.getUniqueId = () => {
 }
 
 exports.getTime = () => {
-    return Date.now;
+
+    return Date.now();
 }
 
 
@@ -16,7 +17,7 @@ const userProfileStorage = multer.diskStorage({
     destination: `uploads/${process.env.PROFILE_IMAGE_PATH}/`,
     filename: function (req, file, cb) {
 
-        console.log(file)
+
         cb(null, Date.now() + path.extname(file.originalname));
     },
 });
@@ -47,6 +48,6 @@ imageMessageFileStorage = multer.diskStorage({
 })
 exports.imageMessageFileUpload = multer({
     storage: imageMessageFileStorage,
-    limits: { fileSize: 1000000, }
-}).single('track')
+    limits: { fileSize: 10000000, }
+}).single('imageMsg')
 

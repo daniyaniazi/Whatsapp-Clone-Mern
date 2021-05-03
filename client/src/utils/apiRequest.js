@@ -1,10 +1,10 @@
 import axios from 'axios'
 
 export const postRequest = async (url, payload = {}) => {
-    console.log("POST REQ", url, payload)
+
     const data = await axios.post(url, payload).then(response => response.data)
         .catch(err => {
-            console.log("error", err)
+
             return ({ error: err.response.data })
         })
 

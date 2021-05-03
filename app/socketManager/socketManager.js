@@ -29,34 +29,39 @@ module.exports = (socket) => {
 
         //SEND  CHAT
         socket.on("send-msg", async (data, callback) => {
-            const { senderID, receiverId, msg } = data;
+            const { senderId, receiverId, msg } = data;
+            currentTime = getTime()
             const ChatObj = {
-                room: [receiverId, senderID],
-                senderID,
+                room: [receiverId, senderId],
+                time: currentTime,
+                senderId,
                 receiverId,
                 msg,
-                time: getTime()
+
             }
+
             await saveChats(ChatObj)
 
             //sending to reciever
-            io.to('recieverId').emit("recieve-msg", chatObj)
-            callback(chatObj)
+            io.to('recieverId').emit("recieve-msg", ChatObj)
+            callback(ChatObj)
         })
 
         //TYPING INDICATOR
         socket.on("user-typing", async (data, callback) => {
-            const { senderID, receiverId, msg } = data;
+            const { senderId, receiverId, msg } = data;
+            currentTime = getTime()
             const ChatObj = {
-                room: [receiverId, senderID],
-                senderID,
+                room: [receiverId, senderId],
+                time: currentTime,
+                senderId,
                 receiverId,
                 msg,
-                time: getTime()
+
             }
 
             //indicator to reciever
-            io.to('recieverId').emit("user-typing", chatObj)
+            io.to('recieverId').emit("user-typing", ChatObj)
             callback(data)
         })
 

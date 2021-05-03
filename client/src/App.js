@@ -6,7 +6,9 @@ import ChatCardListing from "./components/ChatCardListing/ChatCardListing";
 import ChatSection from "./components/ChatSection/ChatSection";
 import Login from "./components/Login/Login";
 import { Fragment } from 'react';
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import io from "socket.io-client";
+
 //API
 import { getRequest, postRequest } from "./utils/apiRequest";
 import { BASE_URL, LOGIN, USER_LIST } from "./utils/apiEndpoints";
@@ -63,9 +65,9 @@ function App() {
 
   const getFriendsList = async (user) => {
     const response = await getRequest(`${BASE_URL}${USER_LIST}/${user.sessionId}`)
-    console.log(response)
+
     if (response.error) {
-      console.log(response.error)
+
       setError(response.error)
       return false
     }
@@ -86,13 +88,13 @@ function App() {
       formData.append("profileImg", userData.profileImg, userData.profileImg.name)
     }
     formData.append("payload", JSON.stringify({ name: userData.name }))
-    // console.log("FORM DAATA", formData)
+
     const response = await postRequest(`${BASE_URL}${LOGIN}`, formData)
     if (response.error) {
       setError(response.error)
       return false
     }
-    console.log(response)
+
     setCookies("user", response)
     setUser(response)
     joinUser(response)
@@ -105,16 +107,19 @@ function App() {
   }
 
   const updateRecentMsg = (data) => {
+    // console.log("in every send message is should run ", data)
     friendslistsDispatch({ type: "RECENT_MSG", payload: data })
+
   }
+
   socket.on('recieve-msg', (data) => {
-    console.log(data)
+
     updateRecentMsg(data)
     setrecentMsg(data)
   })
 
   socket.on('user-typing', (data) => {
-    console.log(data)
+
     updateRecentMsg(data)
   })
 
@@ -131,14 +136,25 @@ function App() {
         (<AuthContext.Provider value={user}>
           <SocketContext.Provider value={socket}>
             <div className="App">
-              <div className="user-left-side">
-                <ProfileSection handleLogout={handleLogout} />
-                <SearchBar />
-                <ChatCardListing friendList={friendList} />
-              </div>
-              <div className="chat-right-side">
-                <ChatSection />
-              </div>
+              <Router>
+                <div className="user-left-side">
+                  <ProfileSection handleLogout={handleLogout} />
+                  <SearchBar />
+                  <ChatCardListing friendList={friendList} />
+                </div>
+                <Switch>
+                  <Route path='/:id'>
+                    <div className="chat-right-side">
+                      <ChatSection
+                        updateRecentMsg={updateRecentMsg}
+                        recentMsg={recentMsg}
+                        recentOfflineFriend={recentOfflineFriend}
+                        recentOnlineFriend={recentOnlineFriend}
+                      />
+                    </div>
+                  </Route>
+                </Switch>
+              </Router>
             </div>
           </SocketContext.Provider>
         </AuthContext.Provider>)

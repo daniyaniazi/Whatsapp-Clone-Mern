@@ -10,15 +10,19 @@ const friendListRedicer = (state, action) => {
             return draftState
 
         case "RECENT_MSG":
-            if (draftState[action.payload.senderId]) {
-                draftState[action.payload.senderId]["recentMsg"] = {
+            const SenderId = action.payload.senderId
+            const receiverId = action.payload.receiverId
+
+            if (draftState[SenderId] !== undefined) {
+                console.log("we are in sender now")
+                draftState[`${action.payload.senderId}`]["recentMsg"] = {
                     time: action.payload.time,
                     msg: action.payload.msg,
 
                 }
             }
-            if (draftState[action.payload.recieverId]) {
-                draftState[action.payload.recieverId]["recentMsg"] = {
+            if (draftState[receiverId] !== undefined) {
+                draftState[receiverId]["recentMsg"] = {
                     time: action.payload.time,
                     msg: action.payload.msg,
 

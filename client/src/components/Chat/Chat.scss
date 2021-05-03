@@ -7,8 +7,8 @@
     background-size: cover;
     padding: 20px 20px;
     box-sizing: border-box;
-    height: 80vh;
     overflow-y: scroll;
+    height: 80vh;
     .chat {
         line-height: 22px;
         padding: 15px;
@@ -69,6 +69,21 @@
                 font-weight: 500;
                 color: #105039;
             }
+        }
+    }
+    .No-chat {
+        background-color: #fff5c4f2;
+        padding: 5px 12px 6px;
+        text-align: center;
+        border-radius: 7.5px;
+        text-shadow: 0 1px 0 rgba(255, 255, 255, .4);
+        box-shadow: 0 1px .5px rgba(0, 0, 0, .13);
+        position: relative;
+        bottom: -420px;
+        .icon-small {
+            margin-right: 5px;
+            color: rgba(0, 0, 0, .45);
+            font-size: smaller;
         }
     }
 }
