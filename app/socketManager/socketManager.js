@@ -43,7 +43,8 @@ module.exports = (socket) => {
             await saveChats(ChatObj)
 
             //sending to reciever
-            io.to('recieverId').emit("recieve-msg", ChatObj)
+            console.log(ChatObj)
+            io.to('receiverId').emit("receive-msg", ChatObj)
             callback(ChatObj)
         })
 

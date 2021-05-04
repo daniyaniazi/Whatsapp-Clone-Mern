@@ -21,6 +21,7 @@ exports.getUserInfoController = async function (sessionId) {
     const db = (await M_CONNECT).db(process.env.MONGO_DB_NAME);
     let collection = await db.collection(process.env.MONGO_DB_USERS_COLLECTION)
     let res = await collection.findOne({ sessionId: sessionId })
+
     return res;
 }
 

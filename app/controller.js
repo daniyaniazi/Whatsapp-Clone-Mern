@@ -50,7 +50,9 @@ exports.getUserList = async (req, res) => {
 
 exports.getUserInfo = async (req, res) => {
     try {
+
         const userInfo = await getUserInfoController(req.params.id)
+
         res.status(200).send(userInfo)
     } catch (error) {
         res.status(400).send(error.message)
@@ -100,14 +102,16 @@ exports.uploadImageFile = async (req, res) => {
 
 exports.CheckIfUserOffline = async (req, res) => {
     try {
-        getOfflineUserInfo("WC:user:OFF", req.params.id, (e, r) => {
+        await getOfflineUserInfo("WC:user:OFF", req.params.id, (e, r) => {
             if (e) throw new Error
-            // console.log(r)
+
             res.status(200).send(r ? r : false)
         })
+
     }
 
     catch (error) {
+
         res.status(400).send(error.message)
     }
 }

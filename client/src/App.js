@@ -96,30 +96,30 @@ function App() {
     }
 
     setCookies("user", response)
+
     setUser(response)
+
     joinUser(response)
     getFriendsList(response)
   }
 
   const handleLogout = () => {
     removeCookies("user");
+    window.location = '/'
     setUser(null)
   }
 
   const updateRecentMsg = (data) => {
-    // console.log("in every send message is should run ", data)
     friendslistsDispatch({ type: "RECENT_MSG", payload: data })
-
   }
 
-  socket.on('recieve-msg', (data) => {
-
+  socket.on('receive-msg', (data) => {
+    console.log("new message")
     updateRecentMsg(data)
     setrecentMsg(data)
   })
 
   socket.on('user-typing', (data) => {
-
     updateRecentMsg(data)
   })
 
@@ -129,6 +129,9 @@ function App() {
     if (user && user.sessionId) {
       joinUser(user)
       getFriendsList(user)
+    }
+    else {
+      setUser(null)
     }
   }, []);
   return (

@@ -6,7 +6,7 @@ const friendListRedicer = (state, action) => {
             return draftState
 
         case "NEW_FRIEND":
-            draftState = { ...draftState, [action.payload.sesionId]: action.payload }
+            draftState = { ...draftState, [action.payload.sessionId]: action.payload }
             return draftState
 
         case "RECENT_MSG":
@@ -14,7 +14,7 @@ const friendListRedicer = (state, action) => {
             const receiverId = action.payload.receiverId
 
             if (draftState[SenderId] !== undefined) {
-                console.log("we are in sender now")
+
                 draftState[`${action.payload.senderId}`]["recentMsg"] = {
                     time: action.payload.time,
                     msg: action.payload.msg,

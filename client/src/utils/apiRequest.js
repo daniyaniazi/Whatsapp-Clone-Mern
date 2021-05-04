@@ -21,8 +21,12 @@ export const putRequest = async (url, payload = {}) => {
 
 
 export const getRequest = async (url) => {
-    const data = await axios.get(url).then(response => response.data)
-        .catch(err => ({ error: err.response.data }))
+    const data = await axios.get(url).then(response => {
+        return response.data
+    })
+        .catch(err => {
+            return ({ error: err.msg })
+        })
 
     return data
 }

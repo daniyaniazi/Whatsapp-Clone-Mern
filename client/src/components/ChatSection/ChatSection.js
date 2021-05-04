@@ -21,63 +21,38 @@ const ChatSection = ({ updateRecentMsg, recentMsg, recentOfflineFriend, recentOn
     const [error, setError] = useState(null);
     const [IsChatLoading, setIsChatLoading] = useState(false);
     const [friendInfo, setFriendInfo] = useState({});
-
     const [chats, chatsDispatch] = useReducer(chatsReducer, initialState)
 
     const params = useParams()
     const userId = params.id
 
     const CheckIfUserOffline = async () => {
-        const response = await getRequest(`${BASE_URL}${CHECK_IS_OFFLINE}/${userId}`)
-        if (response.error) {
-            setError(response.error)
-            return false
+        if (userId !== undefined) {
+            const response = await getRequest(`${BASE_URL}${CHECK_IS_OFFLINE}/${userId}`)
+            if (response.error) {
+                setError(response.error)
+                return false
+            }
+            return response
         }
-        return response
     }
+    const getData = async () => {
+        await getFriendInfo();
+        await getChats()
 
-    const getFriendInfo = async () => {
-        const response = await getRequest(`${BASE_URL}${USER}/${userId}`)
-
-        if (response.error) {
-            setError(response.error)
-            return false
-        }
-
-        const userOfflineResponse = await CheckIfUserOffline(response)
-        // console.log(userOfflineResponse)
-        let userAvailability = {
-            isOnline: true,
-        }
-        if (!userOfflineResponse) {
-            userAvailability.isOnline = false
-            userAvailability["updatedAt"] = userOfflineResponse.time
-        }
-        setFriendInfo({ ...response, ...userAvailability })
     }
-
-    const getChats = async () => {
-
-        const response = await postRequest(`${BASE_URL}${CHATS}`, {
-            senderId: user.sessionId,
-            recieverId: userId
-        })
-
-        if (response.error) {
-            setError(response.error)
-            return false
-        }
-        chatsDispatch({ type: "CHATS", payload: response })
-        setIsChatLoading(true)
-
-        return response
-    }
+    useEffect(async () => {
+        const unsubscribe = getData(); //subscribe
+        return () => {
+            chatsDispatch({ type: "RESET_CHATS", payload: [] })
+        };
+    }, [userId]);
     useEffect(() => {
         if (IsChatLoading && recentMsg && userId === recentMsg.senderId) {
             chatsDispatch({ type: "CHATS", payload: [recentMsg] });
         }
-    }, [recentMsg.time]);
-
+        getData()
+    }, [recentMsg, recentMsg.time]);
     useEffect(() => {
         if (userId === recentOnlineFriend.sessionId) {
             setFriendInfo({ ...friendInfo, isOnline: true });
@@ -92,17 +67,42 @@ const ChatSection = ({ updateRecentMsg, recentMsg, recentOfflineFriend, recentOn
             });
         }
     }, [recentOfflineFriend]);
+    const getFriendInfo = async () => {
+        if (userId !== undefined) {
+            const response = await getRequest(`${BASE_URL}${USER}/${userId}`)
+            if (response.error) {
+                setError(response.error)
+                return false
+            }
+            const userOfflineResponse = await CheckIfUserOffline(response)
 
-    useEffect(() => {
-        getFriendInfo();
-        getChats()
+            let userAvailability = {
+                isOnline: false,
+            }
+            if (!userOfflineResponse) {
+                userAvailability.isOnline = true
+                userAvailability["updatedAt"] = userOfflineResponse.time
+            }
+            setFriendInfo({ ...response, ...userAvailability })
 
-        return () => {
-            chatsDispatch({ type: "RESET_CHATS", payload: [] })
-        };
-    }, [userId]);
+        }
+    }
+    const getChats = async () => {
+        const response = await postRequest(`${BASE_URL}${CHATS}`, {
+            senderId: user.sessionId,
+            recieverId: userId
+        })
+        if (response.error) {
+            setError(response.error)
+            return false
+        }
+        chatsDispatch({ type: "CHATS", payload: response })
+        setIsChatLoading(true)
 
+        return response
+    }
     const sendMsg = (value, type, theme) => {
+
         socket.emit(
             "send-msg",
             {
@@ -113,13 +113,17 @@ const ChatSection = ({ updateRecentMsg, recentMsg, recentOfflineFriend, recentOn
                 theme,
             },
             (cbData) => {
-                // console.log("message is send calling updateRecentMsg with data", cbData)
+
                 updateRecentMsg(cbData);
+                getData()
                 chatsDispatch({ type: "CHATS", payload: [cbData] });
             }
         );
-        getChats()
     };
+    socket.on('receive-msg', (cbData) => {
+        getData()
+        chatsDispatch({ type: "CHATS", payload: [cbData] });
+    })
 
     const sendTyping = (value) => {
         socket.emit(

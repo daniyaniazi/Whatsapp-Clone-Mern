@@ -9,7 +9,7 @@ const ChatCardListing = ({ friendList, }) => {
 
     const recentMessage = (data) => {
         let msg = ''
-        // console.log("DATA", data)
+
         if (data.recentMsg && data.recentMsg.msg) {
             if (data.recentMsg.msg.type === "message") {
                 msg = data.recentMsg.msg.value
@@ -46,7 +46,7 @@ const ChatCardListing = ({ friendList, }) => {
                             </div>
 
                             <div className="time">
-                                {friendList[key].recentMessage && shortFormatTime(friendList[key].recentMessage.time)}
+                                {friendList[key].recentMsg && shortFormatTime(friendList[key].recentMsg.time)}
                             </div>
                             <div className="action-btn">
                                 <FontAwesomeIcon icon={faChevronDown} />

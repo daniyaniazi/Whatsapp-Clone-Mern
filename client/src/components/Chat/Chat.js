@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { useRef, useEffect } from "react";
 import './Chat.scss';
 import { shortFormatTime } from "../../utils/helper";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
 
 const Chat = ({ sessionId, friendName, chats }) => {
-
+    const bottomRef = useRef()
     const renderMsg = (msg) => {
         if (msg.type === 'file') {
             if (msg.theme === 'audio') {
@@ -15,13 +15,16 @@ const Chat = ({ sessionId, friendName, chats }) => {
                 return <img style={{ width: "200px" }} src={msg.value} alt="img-msg" />
 
             }
-
         }
         return msg.value
     }
+    useEffect(() => {
+        var scrollingElement = bottomRef.current;
+        scrollingElement.scrollTop = scrollingElement.scrollHeight;
+    }, [chats]);
 
     return (
-        <div className='chat-section '>
+        <div className='chat-section ' ref={bottomRef}>
 
             {chats[0] !== undefined ? (Object.keys(chats).map((key) => {
 

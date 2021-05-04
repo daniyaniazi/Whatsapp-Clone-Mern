@@ -27,7 +27,7 @@ const ChatForm = ({ sendMsg, sendTyping }) => {
 
         const formData = new FormData()
         formData.append("imageMsg", file, file.name)
-        // console.log(file)
+
         const response = await postRequest(`${BASE_URL}${UPLOAD_IMAGE_FILE}`, formData)
 
         return response
