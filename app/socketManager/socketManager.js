@@ -38,17 +38,14 @@ module.exports = (socket) => {
                 senderId,
                 receiverId,
                 msg,
-
             }
-
             await saveChats(ChatObj)
-
             //sending to reciever
+            console.log("emmiting receive-msg")
             console.log(ChatObj)
-            io.to('receiverId').emit("receive-msg", ChatObj)
-            callback(ChatObj)
+            io.to(receiverId).emit("receive-msg", ChatObj)
+            callback(data)
         })
-
         //TYPING INDICATOR
         socket.on("user-typing", async (data, callback) => {
             const { senderId, receiverId, msg } = data;
@@ -61,9 +58,9 @@ module.exports = (socket) => {
                 msg,
 
             }
-
+            console.log("emmiting typing")
             //indicator to reciever
-            io.to('receiverId').emit("user-typing", ChatObj)
+            io.to(receiverId).emit("user-typing", ChatObj)
             callback(data)
         })
 

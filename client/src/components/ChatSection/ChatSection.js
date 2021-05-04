@@ -121,6 +121,7 @@ const ChatSection = ({ updateRecentMsg, recentMsg, recentOfflineFriend, recentOn
     };
     socket.on('receive-msg', (data) => {
         console.log("new message", data)
+        chatsDispatch({ type: "CHATS", payload: [data] });
     })
 
     const sendTyping = (value) => {
