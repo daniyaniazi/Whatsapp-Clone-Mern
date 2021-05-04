@@ -51,7 +51,7 @@ const ChatSection = ({ updateRecentMsg, recentMsg, recentOfflineFriend, recentOn
         if (IsChatLoading && recentMsg && userId === recentMsg.senderId) {
             chatsDispatch({ type: "CHATS", payload: [recentMsg] });
         }
-        getData()
+
     }, [recentMsg, recentMsg.time]);
     useEffect(() => {
         if (userId === recentOnlineFriend.sessionId) {
@@ -98,11 +98,9 @@ const ChatSection = ({ updateRecentMsg, recentMsg, recentOfflineFriend, recentOn
         }
         chatsDispatch({ type: "CHATS", payload: response })
         setIsChatLoading(true)
-
         return response
     }
-    const sendMsg = (value, type, theme) => {
-
+    const sendMsg = async (value, type, theme) => {
         socket.emit(
             "send-msg",
             {
@@ -115,14 +113,14 @@ const ChatSection = ({ updateRecentMsg, recentMsg, recentOfflineFriend, recentOn
             (cbData) => {
 
                 updateRecentMsg(cbData);
-                getData()
                 chatsDispatch({ type: "CHATS", payload: [cbData] });
             }
         );
+        let data = await getChats()
+        console.log(data)
     };
-    socket.on('receive-msg', (cbData) => {
-        getData()
-        chatsDispatch({ type: "CHATS", payload: [cbData] });
+    socket.on('receive-msg', (data) => {
+        console.log("new message", data)
     })
 
     const sendTyping = (value) => {

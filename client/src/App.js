@@ -37,6 +37,7 @@ function App() {
   const [recentOnlineFriend, setrecentOnlineFriend] = useState({});
   const [recentOfflineFriend, setrecentOfflineFriend] = useState({});
   const [friendList, friendslistsDispatch] = useReducer(friendListRedicer, initialState)
+
   const joinUser = (user) => {
     let initData = {
       createdAt: user.createdAt,
@@ -79,7 +80,6 @@ function App() {
   const handleLogin = async (userData, error) => {
     const formData = new FormData();
     //if file exist
-
     if (userData.profileImg === null) {
       setError("Please Upload an Image")
       alert("Please Upload an Image")
@@ -96,9 +96,7 @@ function App() {
     }
 
     setCookies("user", response)
-
     setUser(response)
-
     joinUser(response)
     getFriendsList(response)
   }
@@ -114,12 +112,13 @@ function App() {
   }
 
   socket.on('receive-msg', (data) => {
-    console.log("new message")
+    console.log("new message recieved")
     updateRecentMsg(data)
     setrecentMsg(data)
   })
 
   socket.on('user-typing', (data) => {
+    console.log("user is typing")
     updateRecentMsg(data)
   })
 

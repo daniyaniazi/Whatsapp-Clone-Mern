@@ -3,6 +3,7 @@ const ChatReducer = (state, action) => {
 
     switch (action.type) {
         case "CHATS":
+
             draftState = { ...draftState, ...action.payload }
             return draftState
 

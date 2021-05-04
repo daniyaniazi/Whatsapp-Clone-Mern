@@ -30,6 +30,7 @@ module.exports = (socket) => {
         //SEND  CHAT
         socket.on("send-msg", async (data, callback) => {
             const { senderId, receiverId, msg } = data;
+
             currentTime = getTime()
             const ChatObj = {
                 room: [receiverId, senderId],
@@ -62,7 +63,7 @@ module.exports = (socket) => {
             }
 
             //indicator to reciever
-            io.to('recieverId').emit("user-typing", ChatObj)
+            io.to('receiverId').emit("user-typing", ChatObj)
             callback(data)
         })
 
