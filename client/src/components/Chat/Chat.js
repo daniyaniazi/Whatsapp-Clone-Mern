@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
 
 const Chat = ({ sessionId, friendName, chats }) => {
+    console.log(chats)
     const bottomRef = useRef()
     const renderMsg = (msg) => {
         if (msg.type === 'file') {

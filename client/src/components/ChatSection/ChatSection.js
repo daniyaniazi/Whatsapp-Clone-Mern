@@ -117,13 +117,8 @@ const ChatSection = ({ updateRecentMsg, recentMsg, recentOfflineFriend, recentOn
             }
         );
         let data = await getChats()
-        console.log(data)
-    };
-    socket.on('receive-msg', (data) => {
-        console.log("new message", data)
-        chatsDispatch({ type: "CHATS", payload: [data] });
-    })
 
+    };
     const sendTyping = (value) => {
         socket.emit(
             "user-typing",

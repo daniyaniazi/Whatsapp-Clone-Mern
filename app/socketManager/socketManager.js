@@ -41,8 +41,7 @@ module.exports = (socket) => {
             }
             await saveChats(ChatObj)
             //sending to reciever
-            console.log("emmiting receive-msg")
-            console.log(ChatObj)
+            console.log("sending new mess")
             io.to(receiverId).emit("receive-msg", ChatObj)
             callback(data)
         })
@@ -58,8 +57,8 @@ module.exports = (socket) => {
                 msg,
 
             }
-            console.log("emmiting typing")
             //indicator to reciever
+            console.log("user is typing")
             io.to(receiverId).emit("user-typing", ChatObj)
             callback(data)
         })

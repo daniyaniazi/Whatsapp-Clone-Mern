@@ -112,13 +112,13 @@ function App() {
   }
 
   socket.on('receive-msg', (data) => {
-    console.log("new message recieved")
+    // console.log("new message recieved")
     updateRecentMsg(data)
     setrecentMsg(data)
   })
 
   socket.on('user-typing', (data) => {
-    console.log("user is typing")
+
     updateRecentMsg(data)
   })
 
