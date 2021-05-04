@@ -5,7 +5,7 @@ import { faChevronDown, faUser } from "@fortawesome/free-solid-svg-icons";
 import './ChatCardListing.scss';
 import { shortFormatTime } from "../../utils/helper";
 
-const ChatCardListing = ({ friendList }) => {
+const ChatCardListing = ({ friendList, }) => {
 
     const recentMessage = (data) => {
         let msg = ''

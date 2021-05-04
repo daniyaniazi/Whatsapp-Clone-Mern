@@ -18,6 +18,7 @@ import AuthContext from "../src/context/AuthContext";
 import SocketContext from "../src/context/SocketContext";
 //Reducers
 import friendListRedicer from "./reducers/friendListRedicer";
+import chatsReducer from "./reducers/chatsReducer";
 // Creating Socket
 const socket = io.connect("http://localhost:2000/", {
   reconnection: true,
@@ -36,7 +37,6 @@ function App() {
   const [recentOnlineFriend, setrecentOnlineFriend] = useState({});
   const [recentOfflineFriend, setrecentOfflineFriend] = useState({});
   const [friendList, friendslistsDispatch] = useReducer(friendListRedicer, initialState)
-
   const joinUser = (user) => {
     let initData = {
       createdAt: user.createdAt,
@@ -123,6 +123,8 @@ function App() {
     updateRecentMsg(data)
   })
 
+
+
   useEffect(() => {
     if (user && user.sessionId) {
       joinUser(user)
@@ -150,6 +152,7 @@ function App() {
                         recentMsg={recentMsg}
                         recentOfflineFriend={recentOfflineFriend}
                         recentOnlineFriend={recentOnlineFriend}
+
                       />
                     </div>
                   </Route>

@@ -14,7 +14,7 @@ import { postRequest, getRequest } from "../../utils/apiRequest";
 
 const initialState = []
 
-const ChatSection = ({ updateRecentMsg, recentMsg, recentOfflineFriend, recentOnlineFriend }) => {
+const ChatSection = ({ updateRecentMsg, recentMsg, recentOfflineFriend, recentOnlineFriend, }) => {
 
     const user = useContext(AuthContext);
     const socket = useContext(SocketContext);
@@ -96,6 +96,7 @@ const ChatSection = ({ updateRecentMsg, recentMsg, recentOfflineFriend, recentOn
     useEffect(() => {
         getFriendInfo();
         getChats()
+
         return () => {
             chatsDispatch({ type: "RESET_CHATS", payload: [] })
         };

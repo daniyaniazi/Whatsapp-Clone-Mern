@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
 
 const Chat = ({ sessionId, friendName, chats }) => {
-    // console.log(chats[0].time)
+
     const renderMsg = (msg) => {
         if (msg.type === 'file') {
             if (msg.theme === 'audio') {
